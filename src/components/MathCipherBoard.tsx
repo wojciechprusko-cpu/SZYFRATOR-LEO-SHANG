@@ -30,6 +30,8 @@ import {
   aesDecrypt,
   BASIS_CHARS
 } from "../utils/crypto";
+// @ts-ignore
+import agentCharacterImg from "../assets/images/agent_character_1779878998038.png";
 
 // Słownik matematyczny zastępujący pojęcia gramatyczne i tradycyjne (Mathematical Dictionary)
 export const MATH_DICTIONARY = [
@@ -246,6 +248,22 @@ export default function MathCipherBoard() {
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-4 sm:py-6 font-sans">
       
+      {/* SEKCJA PREZENTACJI AGENTA NA SAMEJ GÓRZE */}
+      <div className="flex flex-col items-center justify-center mb-6 text-center">
+        <div className="relative p-2 bg-white rounded-2xl border border-neutral-200 shadow-sm max-w-[200px] transition-transform duration-500 hover:scale-[1.02]">
+          <img
+            src={agentCharacterImg}
+            alt="Operator Matematyczny Szyfru"
+            className="w-40 h-auto rounded-xl object-contain grayscale tracking-normal select-none"
+            style={{ maxHeight: "180px" }}
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute -bottom-2 -right-3 bg-neutral-900 border border-neutral-800 text-white font-mono text-[9px] px-2 py-0.5 rounded shadow whitespace-nowrap uppercase tracking-wider font-bold">
+            OPERATOR θ
+          </div>
+        </div>
+      </div>
+
       {/* JEDNORAZOWA BELKA STATUSU SYSTEMU */}
       <div className="bg-neutral-900 text-white rounded-t-xl px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between border-b border-neutral-800 gap-3">
         <div className="flex items-center gap-3">
