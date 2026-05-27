@@ -1,0 +1,6 @@
+{
+  "name": "Szyfrator Matematyczny",
+  "description": "Generator i dekoder szyfru cyfrowego bazującego na generatorze pseudolosowym oraz kryptografii AES-256 z interfejsem zdefiniowanym w terminologii czysto matematycznej.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
