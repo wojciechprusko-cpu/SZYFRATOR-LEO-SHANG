@@ -140,6 +140,9 @@ async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey>
  */
 export async function aesEncrypt(text: string, password: string): Promise<string> {
   if (!text) return "";
+  if (typeof window === "undefined" || !window.crypto || !window.crypto.subtle) {
+    throw new Error("Kryptografia AES-256 nie jest wspierana w tym środowisku (wymaga HTTPS / bezpiecznego kontekstu).");
+  }
   const encoder = new TextEncoder();
   const data = encoder.encode(text);
   
@@ -172,6 +175,9 @@ export async function aesEncrypt(text: string, password: string): Promise<string
  * AES-256-GCM Decryption of 3-digit decimal-encoded bytes.
  */
 export async function aesDecrypt(digitString: string, password: string): Promise<string> {
+  if (typeof window === "undefined" || !window.crypto || !window.crypto.subtle) {
+    throw new Error("Kryptografia AES-256 nie jest wspierana w tym środowisku (wymaga HTTPS / bezpiecznego kontekstu).");
+  }
   const cleanDigits = digitString.trim().split(/\s+/).filter(Boolean);
   if (cleanDigits.length < 28) { // Salt 16, IV 12, Ciphertext >= 0
     throw new Error("Sygnał wejściowy zbyt krótki (niepełny salt i wektor początkowy).");

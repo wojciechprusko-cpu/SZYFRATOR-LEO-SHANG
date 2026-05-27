@@ -199,17 +199,46 @@ export default function MathCipherBoard() {
     return () => clearTimeout(timer);
   }, [cipherInput, thetaKey, operatorMode]);
 
-  // Kopiowanie systemowe
+  // Kopiowanie systemowe z bezpiecznym awaryjnym fallbackiem
   const copyValue = (text: string, isEncPanel: boolean) => {
     if (!text) return;
-    navigator.clipboard.writeText(text);
-    if (isEncPanel) {
-      setCopiedEnc(true);
-      setTimeout(() => setCopiedEnc(false), 2000);
+
+    const finalizeCopy = () => {
+      if (isEncPanel) {
+        setCopiedEnc(true);
+        setTimeout(() => setCopiedEnc(false), 2000);
+      } else {
+        setCopiedDec(true);
+        setTimeout(() => setCopiedDec(false), 2000);
+      }
+    };
+
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      navigator.clipboard.writeText(text)
+        .then(finalizeCopy)
+        .catch(() => fallbackCopy(text, finalizeCopy));
     } else {
-      setCopiedDec(true);
-      setTimeout(() => setCopiedDec(false), 2000);
+      fallbackCopy(text, finalizeCopy);
     }
+  };
+
+  const fallbackCopy = (text: string, onSuccess: () => void) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      onSuccess();
+    } catch (err) {
+      console.error("Błąd zapisu do schowka:", err);
+    }
+    document.body.removeChild(textArea);
   };
 
   // Stałe matematyczne pod klawisze szybkich stałych kosmicznych
